@@ -1,0 +1,65 @@
+h1 {
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+
+div {
+  text-align: center;
+  border-bottom: 1px solid black;
+  padding-bottom: 2rem;
+  margin-inline: 5rem;
+}
+
+h3 {
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+}
+
+input {
+  padding-block: 8px;
+  margin-block: 5px;
+  width: 60%;
+}
+
+input::placeholder {
+  text-align: center;
+}
+
+button {
+  background-color: transparent;
+  border: 1px solid black;
+  margin-top: 1rem;
+  padding-block: 10px;
+  padding-inline: 30px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+  background-color: black;
+  color: white;
+}
+
+.productList {
+  margin-block: 3rem;
+}
+
+.productList h2 {
+  text-transform: uppercase;
+  margin-block: 2rem;
+}
+
+.productList ul {
+  list-style-type: none;
+}
+
+.productList li {
+  margin-bottom: 2rem;
+}
+
+.productList img {
+  width: 10rem;
+  margin-bottom: 1rem;
+}
