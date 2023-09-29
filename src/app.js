@@ -9,6 +9,8 @@ import { productsRouter } from "./routes/products.routes.js";
 import { cartsRouter } from "./routes/carts.routes.js";
 import { productsService } from "./persistence/index.js";
 
+import { connectDB } from "./config/dbConnection.js";
+
 const port = 8080;
 const app = express();
 
@@ -19,6 +21,8 @@ const httpServer = app.listen(port, () =>
 );
 
 const io = new Server(httpServer);
+
+connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
