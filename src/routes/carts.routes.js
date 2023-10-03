@@ -3,16 +3,6 @@ import { cartsService } from "../dao/index.js";
 
 const router = Router();
 
-//create cart
-router.post("/", async (req, res) => {
-  try {
-    const cart = await cartsService.createCart();
-    res.json({ data: cart });
-  } catch (error) {
-    res.json({ error: error.message });
-  }
-});
-
 //get all carts
 router.get("/", async (req, res) => {
   try {
@@ -23,10 +13,25 @@ router.get("/", async (req, res) => {
   }
 });
 
+//add cart
+router.post("/", async (req, res) => {
+  try {
+    const cartInfo = req.body;
+    const cart = await cartsService.addCart(cartInfo);
+    res.json({
+      status: "success",
+      message: "cart added successfully",
+      data: cart,
+    });
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+});
+
 //get cart id
 router.get("/:cid", async (req, res) => {
   try {
-    const cid = parseInt(req.params.cid);
+    const cid = req.params.cid;
     const cart = await cartsService.getCartById(cid);
     res.json({ data: `cart ID: ${cid}`, cart });
   } catch (error) {
@@ -37,8 +42,8 @@ router.get("/:cid", async (req, res) => {
 //agregar productos al arreglo del carrito seleccionado
 router.post("/:cid/products/:pid", async (req, res) => {
   try {
-    const cid = parseInt(req.params.cid);
-    const pid = parseInt(req.params.pid);
+    const cid = req.params.cid;
+    const pid = req.params.pid;
 
     //verificar si el cart existe
     const cart = await cartsService.getCartById(cid);
@@ -57,12 +62,29 @@ router.post("/:cid/products/:pid", async (req, res) => {
     //update cart
     const updateCart = await cartsService.updateCart(cid, cart);
     if (updateCart) {
-      res.json({ message: "product added to cart successfully" });
+      res.json({
+        status: "success",
+        message: "product added to cart successfully",
+      });
     } else {
-      res.json({ message: "error adding product to cart" });
+      res.json({ status: "error", message: "error adding product to cart" });
     }
   } catch (error) {
-    res.json({ error: error.message });
+    res.json({ status: "error", message: error.message });
+  }
+});
+
+//delete cart
+router.delete("/:cid", async (req, res) => {
+  try {
+    const cid = req.params.cid;
+    await cartsService.deleteCart(cid);
+    res.json({
+      status: "success",
+      message: "cart deleted successfully",
+    });
+  } catch (error) {
+    res.json({ status: "error", message: error.message });
   }
 });
 

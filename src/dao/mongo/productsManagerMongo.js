@@ -5,6 +5,7 @@ export class ProductsManagerMongo {
     this.model = productsModel;
   }
 
+  //get products
   async getProducts() {
     try {
       const result = await this.model.find();
@@ -15,6 +16,7 @@ export class ProductsManagerMongo {
     }
   }
 
+  //add product
   async addProduct(productInfo) {
     try {
       const result = await this.model.create(productInfo);
@@ -25,6 +27,7 @@ export class ProductsManagerMongo {
     }
   }
 
+  //get product by ID
   async getProductById(id) {
     try {
       const result = await this.model.findById(id);
@@ -35,6 +38,7 @@ export class ProductsManagerMongo {
     }
   }
 
+  //update product
   async updateProduct(id, updatedContent) {
     try {
       const result = await this.model.findByIdAndUpdate(id, updatedContent, {
@@ -51,6 +55,7 @@ export class ProductsManagerMongo {
     }
   }
 
+  //delete product
   async deleteProduct(id) {
     try {
       const result = await this.model.findByIdAndDelete(id);
