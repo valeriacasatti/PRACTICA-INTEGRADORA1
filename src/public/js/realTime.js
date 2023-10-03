@@ -3,7 +3,7 @@ const socketClient = io();
 const productList = document.getElementById("productList");
 const addProductForm = document.getElementById("addProductForm");
 
-addProductForm.addEventListener("submit", (e) => {
+addProductForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const formData = new FormData(addProductForm);
   const jsonData = {};
@@ -11,17 +11,18 @@ addProductForm.addEventListener("submit", (e) => {
     jsonData[key] = value;
   }
 
+  const file = formData.get("thumbnail");
   const reader = new FileReader();
+
   reader.onload = function () {
-    jsonData.price = parseInt(jsonData.price);
-    jsonData.stock = parseInt(jsonData.stock);
-    jsonData.imageName = jsonData.thumbnail.name;
+    // jsonData.price = parseInt(jsonData.price);
+    // jsonData.stock = parseInt(jsonData.stock);
+    jsonData.imageName = file.name;
     jsonData.imageBuffer = reader.result;
     socketClient.emit("addProduct", jsonData);
   };
-  const file = formData.get("thumbnail");
-  reader.readAsDataURL(file);
 
+  await reader.readAsDataURL(file);
   addProductForm.reset();
 });
 
@@ -39,8 +40,9 @@ socketClient.on("products", (data) => {
     <h6>stock: ${product.stock}</h6>
     <button onClick="deleteProduct(${product.id})">delete</button>
   </li>`;
-    productList.innerHTML = productElm;
   });
+
+  productList.innerHTML = productElm;
 });
 
 const deleteProduct = (id) => {

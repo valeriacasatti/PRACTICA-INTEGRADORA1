@@ -5,10 +5,10 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    const products = await productsService.getProduct();
+    const products = await productsService.getProducts();
     res.render("home", { products, style: "home.css" });
   } catch (error) {
-    res.render({ error: error.message });
+    res.render({ message: error.message });
   }
 });
 

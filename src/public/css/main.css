@@ -8,10 +8,15 @@ nav {
   text-transform: uppercase;
   display: flex;
   justify-content: space-around;
-  margin-block: 2rem;
+  margin-bottom: 1rem;
   font-size: larger;
-  padding-bottom: 2rem;
+  padding-block: 1.5rem;
   border-bottom: 1px solid black;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
 }
 
 a {

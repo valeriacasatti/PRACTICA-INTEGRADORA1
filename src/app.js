@@ -17,7 +17,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, "/public")));
 
 const httpServer = app.listen(port, () =>
-  console.log(`server running in port ${port}`)
+  console.log(`server running on port ${port}`)
 );
 
 const io = new Server(httpServer);
@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.engine(".hbs", engine({ extname: ".hbs" }));
 app.set("view engine", ".hbs");
-app.set("views", path.join(__dirname, "views"));
+app.set("views", path.join(__dirname, "/views"));
 
 app.use(viewsRouter);
 app.use("/api/products", productsRouter);
@@ -38,9 +38,8 @@ app.use("/api/carts", cartsRouter);
 io.on("connection", async (socket) => {
   try {
     console.log("client connected");
-    const products = await productsService.getProduct();
+    const products = await productsService.getProducts();
     socket.emit("products", products);
-
     socket.on("addProduct", async (dataProduct) => {
       try {
         const productToSave = {
@@ -57,8 +56,8 @@ io.on("connection", async (socket) => {
 
         await productsService.addProduct(productToSave);
 
-        const products = await productsService.getProduct();
-        socket.emit("products", products);
+        const updatedProducts = await productsService.getProducts();
+        socket.emit("products", updatedProducts);
       } catch (error) {
         console.log(error);
       }
@@ -67,8 +66,8 @@ io.on("connection", async (socket) => {
     socket.on("deleteProduct", async (id) => {
       try {
         await productsService.deleteProduct(id);
-        const products = await productsService.getProduct();
-        socket.emit("products", products);
+        const updatedProducts = await productsService.getProducts();
+        socket.emit("products", updatedProducts);
       } catch (error) {
         console.log(error);
       }

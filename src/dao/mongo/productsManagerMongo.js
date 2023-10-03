@@ -1,14 +1,14 @@
 import { productsModel } from "./models/products.model.js";
 
 export class ProductsManagerMongo {
-  constructor() {
+  constructor(model) {
     this.model = productsModel;
   }
 
   //get products
   async getProducts() {
     try {
-      const result = await this.model.find();
+      const result = await this.model.find().lean();
       return result;
     } catch (error) {
       console.log(`get products error: ${error.message}`);
