@@ -7,7 +7,7 @@ import { Server } from "socket.io";
 import { viewsRouter } from "./routes/views.routes.js";
 import { productsRouter } from "./routes/products.routes.js";
 import { cartsRouter } from "./routes/carts.routes.js";
-import { productsService } from "./persistence/index.js";
+import { productsService } from "./dao/index.js";
 
 import { connectDB } from "./config/dbConnection.js";
 
