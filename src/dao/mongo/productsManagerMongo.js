@@ -1,7 +1,7 @@
 import { productsModel } from "./models/products.model.js";
 
 export class ProductsManagerMongo {
-  constructor(model) {
+  constructor() {
     this.model = productsModel;
   }
 

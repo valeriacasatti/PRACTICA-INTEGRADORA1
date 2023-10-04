@@ -40,6 +40,7 @@ io.on("connection", async (socket) => {
     console.log("client connected");
     const products = await productsService.getProducts();
     socket.emit("products", products);
+
     socket.on("addProduct", async (dataProduct) => {
       try {
         const productToSave = {
@@ -50,14 +51,12 @@ io.on("connection", async (socket) => {
           stock: dataProduct.stock,
           status: dataProduct.status,
           category: dataProduct.category,
-          thumbnail: dataProduct.imageName,
-          imageBuffer: dataProduct.imageBuffer,
+          thumbnail: dataProduct.thumbnail,
         };
-
         await productsService.addProduct(productToSave);
 
         const updatedProducts = await productsService.getProducts();
-        socket.emit("products", updatedProducts);
+        io.emit("products", updatedProducts);
       } catch (error) {
         console.log(error);
       }
@@ -67,6 +66,7 @@ io.on("connection", async (socket) => {
       try {
         await productsService.deleteProduct(id);
         const updatedProducts = await productsService.getProducts();
+
         socket.emit("products", updatedProducts);
       } catch (error) {
         console.log(error);

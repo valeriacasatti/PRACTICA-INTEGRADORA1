@@ -3,7 +3,7 @@ const socketClient = io();
 const productList = document.getElementById("productList");
 const addProductForm = document.getElementById("addProductForm");
 
-addProductForm.addEventListener("submit", async (e) => {
+addProductForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const formData = new FormData(addProductForm);
   const jsonData = {};
@@ -11,18 +11,10 @@ addProductForm.addEventListener("submit", async (e) => {
     jsonData[key] = value;
   }
 
-  const file = formData.get("thumbnail");
-  const reader = new FileReader();
+  jsonData.price = parseInt(jsonData.price);
+  jsonData.stock = parseInt(jsonData.stock);
 
-  reader.onload = function () {
-    // jsonData.price = parseInt(jsonData.price);
-    // jsonData.stock = parseInt(jsonData.stock);
-    jsonData.imageName = file.name;
-    jsonData.imageBuffer = reader.result;
-    socketClient.emit("addProduct", jsonData);
-  };
-
-  await reader.readAsDataURL(file);
+  socketClient.emit("addProduct", jsonData);
   addProductForm.reset();
 });
 
@@ -30,15 +22,14 @@ socketClient.on("products", (data) => {
   let productElm = "";
 
   data.forEach((product) => {
-    const imagenURI = product.imageBuffer || `/images/${product.thumbnail}`;
     productElm += `
   <li>
- <img src="${imagenURI}"  />
-    <h3>${product.title}</h3>
+ <img src="${product.thumbnail}"  />
+    <h4 class="productTitle">${product.title}</h4>
     <h4>${product.description}</h4>
     <h5>$ ${product.price}</h5>
     <h6>stock: ${product.stock}</h6>
-    <button onClick="deleteProduct(${product.id})">delete</button>
+    <button onClick="deleteProduct('${product._id}')">delete</button>
   </li>`;
   });
 

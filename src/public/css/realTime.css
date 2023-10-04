@@ -49,18 +49,20 @@ button:hover {
 
 .productList h2 {
   text-transform: uppercase;
-  margin-block: 2rem;
+  margin-top: 2rem;
 }
 
 .productList ul {
   list-style-type: none;
 }
 
-.productList li {
-  margin-bottom: 2rem;
+.productList img {
+  width: 15rem;
+  margin-top: 3rem;
 }
 
-.productList img {
-  width: 10rem;
-  margin-bottom: 1rem;
+.productTitle {
+  text-transform: uppercase;
+  font-size: large;
+  margin-block: 2rem;
 }
