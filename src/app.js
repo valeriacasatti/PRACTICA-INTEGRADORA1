@@ -76,3 +76,15 @@ io.on("connection", async (socket) => {
     console.log(error);
   }
 });
+
+///CHAT
+let chat = [];
+io.on("connection", (socket) => {
+  socket.on("messageChat", (data) => {
+    chat.push(data);
+    io.emit("chatHistory", chat);
+  });
+  socket.on("authenticated", (data) => {
+    socket.broadcast.emit("newUser", `${data} is connected`);
+  });
+});

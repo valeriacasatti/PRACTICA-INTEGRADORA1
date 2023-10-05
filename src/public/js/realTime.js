@@ -16,6 +16,13 @@ addProductForm.addEventListener("submit", (e) => {
 
   socketClient.emit("addProduct", jsonData);
   addProductForm.reset();
+
+  Swal.fire({
+    title: `${jsonData.title} added successfully!`,
+    showConfirmButton: false,
+    timer: 1000,
+    icon: "success",
+  });
 });
 
 socketClient.on("products", (data) => {
