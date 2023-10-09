@@ -17,8 +17,10 @@ export class ChatManagerMongo {
   }
 
   //add messagge
-  async addMessage() {
+  async addMessage(data) {
     try {
+      const result = await this.model.create(data);
+      return result;
     } catch (error) {
       console.log(`add messagge error: ${error.message}`);
       throw new Error(`add messagge error: ${error.message}`);

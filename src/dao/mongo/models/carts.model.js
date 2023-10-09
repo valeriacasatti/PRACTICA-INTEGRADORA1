@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Mongoose } from "mongoose";
 
 const cartsCollection = "carts";
 
@@ -6,7 +6,10 @@ const cartSchema = new mongoose.Schema({
   products: {
     type: [
       {
-        idProduct: String,
+        productId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "products",
+        },
         quantity: {
           type: Number,
           required: true,
@@ -16,5 +19,7 @@ const cartSchema = new mongoose.Schema({
     default: [],
   },
 });
+
+//find().populate("products.productId");
 
 export const cartsModel = new mongoose.model(cartsCollection, cartSchema);

@@ -7,7 +7,8 @@ import { Server } from "socket.io";
 import { viewsRouter } from "./routes/views.routes.js";
 import { productsRouter } from "./routes/products.routes.js";
 import { cartsRouter } from "./routes/carts.routes.js";
-import { productsService } from "./dao/index.js";
+import { chatsService, productsService } from "./dao/index.js";
+import { chatsRouter } from "./routes/chat.routes.js";
 
 import { connectDB } from "./config/dbConnection.js";
 
@@ -34,6 +35,7 @@ app.set("views", path.join(__dirname, "/views"));
 app.use(viewsRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
+app.use("/api/chats", chatsRouter);
 
 io.on("connection", async (socket) => {
   try {
@@ -80,11 +82,31 @@ io.on("connection", async (socket) => {
 ///CHAT
 let chat = [];
 io.on("connection", (socket) => {
-  socket.on("messageChat", (data) => {
-    chat.push(data);
-    io.emit("chatHistory", chat);
+  socket.emit("chatHistory", chat);
+  socket.on("messageChat", async (data) => {
+    try {
+      chat.push(data);
+      console.log(chat);
+
+      io.emit("chatHistory", chat);
+    } catch (error) {
+      console.log(error);
+    }
   });
+
   socket.on("authenticated", (data) => {
     socket.broadcast.emit("newUser", `${data} is connected`);
+  });
+
+  socket.on("messageChat", async (data) => {
+    try {
+      if (data.message.trim() !== "") {
+        await chatsService.addMessage(data);
+        const messageDB = await chatsService.getMessages();
+        io.emit("chatHistory", messageDB);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   });
 });

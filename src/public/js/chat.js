@@ -34,9 +34,19 @@ Swal.fire({
   });
 
 sendMsg.addEventListener("click", () => {
-  const message = { user, message: inputMsg.value };
-  socketClient.emit("messageChat", message);
-  inputMsg.value = "";
+  const msg = inputMsg.value;
+  if (msg) {
+    const message = { user, message: msg };
+    socketClient.emit("messageChat", message);
+    inputMsg.value = "";
+  } else {
+    Swal.fire({
+      text: "you can't send an empty message",
+      icon: "error",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  }
 });
 
 socketClient.on("chatHistory", (data) => {
